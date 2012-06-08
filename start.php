@@ -18,20 +18,20 @@ if (defined('SWIFT_REQUIRED_LOADED'))
 define('SWIFT_REQUIRED_LOADED', true);
 
 //Load Swift utility class
-require Bundle::path('swiftmailer').'library'.DS.'classes'.DS.'Swift.php';
+require __DIR__.'library'.DS.'classes'.DS.'Swift.php';
 
 //Start the autoloader
 Swift::registerAutoload();
 
 //Load the init script to set up dependency injection
-require Bundle::path('swiftmailer').'library'.DS.'swift_init.php';
+require __DIR__.'library'.DS.'swift_init.php';
 
 // Map the Message classes.
 Autoloader::map(array(
-	'Message' => Bundle::path('swiftmailer').'libraries'.DS.'message.php',
+	'Message' => __DIR__.'libraries'.DS.'message.php',
 
-	'Swiftmailer\\Drivers\\Driver'    => Bundle::path('swiftmailer').'libraries'.DS.'message'.DS.'drivers'.DS.'driver.php',
-	'Swiftmailer\\Drivers\\SMTP'      => Bundle::path('swiftmailer').'libraries'.DS.'message'.DS.'drivers'.DS.'smtp.php',
-	'Swiftmailer\\Drivers\\Sendmail'  => Bundle::path('swiftmailer').'libraries'.DS.'message'.DS.'drivers'.DS.'sendmail.php',
-	'Swiftmailer\\Drivers\\Mail'      => Bundle::path('swiftmailer').'libraries'.DS.'message'.DS.'drivers'.DS.'mail.php',
+	'Swiftmailer\\Drivers\\Driver'    => __DIR__.'libraries'.DS.'message'.DS.'drivers'.DS.'driver.php',
+	'Swiftmailer\\Drivers\\SMTP'      => __DIR__.'libraries'.DS.'message'.DS.'drivers'.DS.'smtp.php',
+	'Swiftmailer\\Drivers\\Sendmail'  => __DIR__.'libraries'.DS.'message'.DS.'drivers'.DS.'sendmail.php',
+	'Swiftmailer\\Drivers\\Mail'      => __DIR__.'libraries'.DS.'message'.DS.'drivers'.DS.'mail.php',
 ));
