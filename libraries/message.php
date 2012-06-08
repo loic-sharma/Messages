@@ -21,7 +21,7 @@ class Message {
 
 		if ( ! isset(static::$drivers[$driver]))
 		{
-			$config = Config::get('swiftmailer::config.transports.'.$driver);
+			$config = Config::get('messages::config.transports.'.$driver);
 
 			static::$drivers[$driver] = static::factory($driver, $config);
 		}
