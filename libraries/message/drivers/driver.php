@@ -273,7 +273,22 @@ abstract class Driver {
 
 		return $this;
 	}
-
+	
+	/**
+	* Set a custom header
+	*
+	* @param  string  $header
+	* @param  string  $value
+	* @return Driver
+	*/
+	public function header($header, $value)
+	{
+		$headers = $this->swift->getHeaders();
+		$headers->addTextHeader($header, $value);
+	
+		return $this;
+	}
+	
 	/**
 	 * Send the email.
 	 *
