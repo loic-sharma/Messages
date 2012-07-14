@@ -13,18 +13,30 @@
  */
 
 if (defined('SWIFT_REQUIRED_LOADED'))
-	return;
+{
+	return;	
+}
 
 define('SWIFT_REQUIRED_LOADED', true);
 
-//Load Swift utility class
-require __DIR__.DS.'library'.DS.'classes'.DS.'Swift.php';
+// Load Swift utility class
+require __DIR__.DS.'swiftmailer'.DS.'classes'.DS.'Swift.php';
 
-//Start the autoloader
+// Start the autoloader
 Swift::registerAutoload();
 
-//Load the init script to set up dependency injection
-require __DIR__.DS.'library'.DS.'swift_init.php';
+// Load the init script to set up dependency injection
+require __DIR__.DS.'swiftmailer'.DS.'swift_init.php';
+
+// Register the native quoted printable encoder to achieve much better 
+// performance. This requires PHP 5.3, but since this is a Laravel bundle
+// I think it's safe to assume that that shouldn't be a problem.
+Swift::init(function()
+{
+	Swift_DependencyContainer::getInstance()
+		->register('mime.qpcontentencoder')
+		->asAliasOf('mime.nativeqpcontentencoder');
+});
 
 // Map the Message classes.
 Autoloader::map(array(
