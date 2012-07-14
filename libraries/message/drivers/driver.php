@@ -20,13 +20,6 @@ abstract class Driver {
 	public $transport;
 
 	/**
-	 * The type of the body content.
-	 *
-	 * @var string
-	 */
-	public $content_type = null;
-
-	/**
 	 * The number of successfully sent emails.
 	 *
 	 * @var int
@@ -63,15 +56,9 @@ abstract class Driver {
 	 */
 	public function html($use_html = true)
 	{
-		if($use_html)
-		{
-			$this->content_type = 'text/html';
-		}
+		$content_type = ($use_html) ? 'text/html' : 'text/plain';
 
-		else
-		{
-			$this->content_type = null;
-		}
+		$this->swift->setContentType($content_type);
 
 		return $this;
 	}
@@ -251,12 +238,7 @@ abstract class Driver {
 	 */
 	public function body($message, $content_type = null, $charset = null)
 	{
-		if( ! is_null($content_type))
-		{
-			$this->content_type = $content_type;
-		}
-
-		$this->swift->setBody($message, $this->content_type, $charset);
+		$this->swift->setBody($message, $content_type, $charset);
 
 		return $this;
 	}
