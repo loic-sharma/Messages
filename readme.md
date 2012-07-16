@@ -1,14 +1,15 @@
 # [Swift Mailer](http://swiftmailer.org) Laravel Bundle
 
-The power of Swift Mailer with the beauty of Laravel
+The power of Swift Mailer with the beauty of Laravel.
 
 ## Installation
 
 Install using the Artian CLI:
 
-	php artisan bundle:install swiftmailer
+	php artisan bundle:install messages
 
-then edit **application/bundles.php** to autoload messages
+then edit **application/bundles.php** to autoload messages:
+
 ```php
 <?php
 
