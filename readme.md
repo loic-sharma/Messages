@@ -8,6 +8,18 @@ Install using the Artian CLI:
 
 	php artisan bundle:install swiftmailer
 
+then edit **application/bundles.php** to autoload messages
+```php
+<?php
+
+return array(
+
+'messages' => array(
+	'auto' => true
+),
+
+```
+	
 You can then set your configuration at **config/config.php**.
 
 ## A Few Examples
