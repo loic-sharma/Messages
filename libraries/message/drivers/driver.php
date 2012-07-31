@@ -1,6 +1,7 @@
 <?php namespace Swiftmailer\Drivers;
 
 use Swift_Mailer;
+use Swift_Message;
 use Swift_Attachment;
 
 abstract class Driver {
@@ -49,6 +50,21 @@ abstract class Driver {
 	abstract public function __construct($config);
 
 	/**
+	 * Prepare the Swift Message class
+	 *
+	 * @return Swift_Message
+	 */
+	public function swift()
+	{
+		if(is_null($this->swift))
+		{
+			$this->swift = Swift_Message::newInstance();
+		}
+
+		return $this->swift;
+	}
+
+	/**
 	 * Set the HTML content type.
 	 *
 	 * @param  bool    $use_html
@@ -58,7 +74,7 @@ abstract class Driver {
 	{
 		$content_type = ($use_html) ? 'text/html' : 'text/plain';
 
-		$this->swift->setContentType($content_type);
+		$this->swift()->setContentType($content_type);
 
 		return $this;
 	}
@@ -71,7 +87,7 @@ abstract class Driver {
 	 */
 	public function subject($subject)
 	{
-		$this->swift->setSubject($subject);
+		$this->swift()->setSubject($subject);
 
 		return $this;
 	}
@@ -87,12 +103,12 @@ abstract class Driver {
 	{
 		if( ! is_array($email))
 		{
-			$this->swift->addFrom($email, $name);
+			$this->swift()->addFrom($email, $name);
 		}
 
 		else
 		{
-			$this->swift->setFrom($email, $name);
+			$this->swift()->setFrom($email, $name);
 		}
 
 		return $this;
@@ -109,7 +125,7 @@ abstract class Driver {
 	{
 		if( ! is_array($email))
 		{
-			$this->swift->addTo($email, $name);
+			$this->swift()->addTo($email, $name);
 
 			$this->emails[] = $email;
 		}
@@ -124,14 +140,14 @@ abstract class Driver {
 				{
 					$this->emails[] = $value;
 
-					$this->swift->addTo($value, null);
+					$this->swift()->addTo($value, null);
 				}
 
 				// If a name is given, the key will be the email address and
 				// the value will be the name.
 				else
 				{
-					$this->swift->addTo($key, $value);
+					$this->swift()->addTo($key, $value);
 
 					$this->emails[] = $key;
 				}
@@ -152,7 +168,7 @@ abstract class Driver {
 	{
 		if( ! is_array($email))
 		{
-			$this->swift->addCc($email, $name);
+			$this->swift()->addCc($email, $name);
 
 			$this->emails[] = $email;
 		}
@@ -167,14 +183,14 @@ abstract class Driver {
 				{
 					$this->emails[] = $value;
 
-					$this->swift->addCc($value, null);
+					$this->swift()->addCc($value, null);
 				}
 
 				// If a name is given, the key will be the email address and
 				// the value will be the name.
 				else
 				{
-					$this->swift->addCc($key, $value);
+					$this->swift()->addCc($key, $value);
 
 					$this->emails[] = $key;
 				}
@@ -196,7 +212,7 @@ abstract class Driver {
 	{
 		if( ! is_array($email))
 		{
-			$this->swift->addBcc($email, $name);
+			$this->swift()->addBcc($email, $name);
 
 			$this->emails[] = $email;
 		}
@@ -211,14 +227,14 @@ abstract class Driver {
 				{
 					$this->emails[] = $value;
 
-					$this->swift->addBcc($value, null);
+					$this->swift()->addBcc($value, null);
 				}
 
 				// If a name is given, the key will be the email address and
 				// the value will be the name.
 				else
 				{
-					$this->swift->addBcc($key, $value);
+					$this->swift()->addBcc($key, $value);
 
 					$this->emails[] = $key;
 				}
@@ -238,7 +254,7 @@ abstract class Driver {
 	 */
 	public function body($message, $content_type = null, $charset = null)
 	{
-		$this->swift->setBody($message, $content_type, $charset);
+		$this->swift()->setBody($message, $content_type, $charset);
 
 		return $this;
 	}
@@ -251,11 +267,11 @@ abstract class Driver {
 	 */
 	public function attach($file_path)
 	{
-		$this->swift->attach(Swift_Attachment::fromPath($file_path));
+		$this->swift()->attach(Swift_Attachment::fromPath($file_path));
 
 		return $this;
 	}
-	
+
 	/**
 	* Set a custom header
 	*
@@ -265,12 +281,11 @@ abstract class Driver {
 	*/
 	public function header($header, $value)
 	{
-		$headers = $this->swift->getHeaders();
-		$headers->addTextHeader($header, $value);
-	
+		$this->swift()->getHeaders()->addTextHeader($header, $value);
+
 		return $this;
 	}
-	
+
 	/**
 	 * Send the email.
 	 *
@@ -280,7 +295,11 @@ abstract class Driver {
 	{
 		$mailer = Swift_Mailer::newInstance($this->transport);
 
-		$this->result = $mailer->send($this->swift, $this->failed);
+		$this->result = $mailer->send($this->swift(), $this->failed);
+
+		// Now that the email is sent, let's clear the Swift_Message instance
+		// so that it can be reinstantiated later if another message is created.
+		$this->swift = null;
 
 		return $this;
 	}

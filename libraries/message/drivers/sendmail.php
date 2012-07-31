@@ -1,6 +1,5 @@
 <?php namespace Swiftmailer\Drivers;
 
-use Swift_Message;
 use Swift_SendmailTransport;
 
 class Sendmail extends Driver {
@@ -13,8 +12,6 @@ class Sendmail extends Driver {
 	 */
 	public function __construct($config)
 	{
-		$this->swift = Swift_Message::newInstance();
-
 		$this->transport = Swift_SendmailTransport::newInstance($config['command']);
 	}
 }
