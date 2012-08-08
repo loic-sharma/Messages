@@ -17,11 +17,11 @@ class Message {
 	 */
 	public static function instance($driver = null)
 	{
-		if (is_null($driver)) $driver = Config::get('messages::config.default');
+		if (is_null($driver)) $driver = Config::get('messages.default', Config::get('messages::config.default'));
 
 		if ( ! isset(static::$drivers[$driver]))
 		{
-			$config = Config::get('messages::config.transports.'.$driver);
+			$config = Config::get('messages.transports.'.$driver, Config::get('messages::config.transports.'.$driver));
 
 			static::$drivers[$driver] = static::factory($driver, $config);
 		}
