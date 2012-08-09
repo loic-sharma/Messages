@@ -52,6 +52,12 @@ if($message->was_sent())
 {
 	echo 'Sweet it worked!';
 }
+
+// Or:
+if(Message::was_sent())
+{
+	echo 'Sweet it worked!';
+}
 ```
 
 ### Checking if a specific email received the message
