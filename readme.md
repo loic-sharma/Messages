@@ -92,7 +92,7 @@ Message::to('someone@gmail.com')
 Message::to('someone@gmail.com')
 	->from('me@gmail.com')
 	->subject('Hello!')
-	->body('Well hello <b>Someone, how is it going?')
+	->body('Well hello <b>Someone</b>, how is it going?')
 	->html(true)
 	->send();
 ```
