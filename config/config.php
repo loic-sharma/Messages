@@ -25,7 +25,12 @@ return array(
 	| more information refer to:
 	|
 	|	http://swiftmailer.org/docs/sending.html
+	| 
 	|
+	| If you want to use Gmail as your email transport, set
+	|  'host'       =>	'smtp.gmail.com', 
+	|  'port'       =>	465,
+	|  'encryption' =>	'ssl',
 	*/
 
 	'transports' => array(
