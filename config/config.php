@@ -28,9 +28,11 @@ return array(
 	| 
 	|
 	| If you want to use Gmail as your email transport, set
-	|  'host'       =>	'smtp.gmail.com', 
-	|  'port'       =>	465,
-	|  'encryption' =>	'ssl',
+	|	'host'      =>	'smtp.gmail.com', 
+	|	'username' 	=>	'username@gmail.com',
+	|	'password'	=>	'password',
+	|	'port'      =>	465,
+	|	'encryption'=>	'ssl',
 	*/
 
 	'transports' => array(
