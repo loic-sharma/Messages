@@ -115,6 +115,20 @@ abstract class Driver {
 	}
 
 	/**
+	 * Add an email address to reply to.
+	 *
+	 * @param  string  $email
+	 * @param  string  $name
+	 * @return Driver
+	 */
+	public function reply($email, $name = null)
+	{
+		$this->swift()->setReplyTo($email, $name);
+		
+		return $this;
+	}
+
+	/**
 	 * Add an email address to the list of emails to send the email to.
 	 *
 	 * @param  string  $email
