@@ -25,6 +25,19 @@ You can then set your configuration at **config/config.php**.
 
 ## A Few Examples
 
+### Changing configurations in runtime
+
+```php
+<?php
+
+Config::set('messages::config.transports.smtp.host', 'smtp.gmail.com');
+Config::set('messages::config.transports.smtp.port', 465);
+Config::set('messages::config.transports.smtp.username', 'someone@gmail.com');
+Config::set('messages::config.transports.smtp.password', 'password');
+Config::set('messages::config.transports.smtp.encryption', 'ssl');
+
+```
+
 ### Sending a message:
 
 ```php
