@@ -129,6 +129,21 @@ Message::to(array('someone@gmail.com', 'email@address.com' => 'name'))
 	->send(); 
 ```
 
+### Sending an email with a reply address
+
+```php
+<?php
+
+Message::to('someone@gmail.com')
+	->from('me@gmail.com')
+	->reply('replytome@gmail.com')
+	->subject('Hello!')
+	->body('Well hello <b>Someone</b>, how is it going?')
+	->html(true)
+	->send();
+```
+
+
 ## Swift Mailer, by Chris Corbyn
 
 Swift Mailer is a component based mailing solution for PHP 5.
