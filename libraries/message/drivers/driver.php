@@ -355,4 +355,11 @@ abstract class Driver {
 
 		return false;
 	}
+
+	public function __call($name, $arguments)
+	{
+		call_user_func_array(array($this->swift(), $name), $arguments);
+
+		return $this;
+	}
 }
