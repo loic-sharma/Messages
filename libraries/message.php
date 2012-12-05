@@ -54,6 +54,27 @@ class Message {
 	}
 
 	/**
+	 * Send message.
+	 *
+	 * @param  Closure                       $callback
+	 * @return Swiftermailer\Drivers\Driver
+	 */
+	public static function send(Closure $callback = null)
+	{
+		$instance = static::instance();
+
+		// If a closure is passed, the closure will be used to modify
+		// the current message.
+		if( ! is_null($callback))
+		{
+			$callback($instance);
+		}
+
+		// Now that the message has been prepared, send it.
+		return $instance->send();
+	}
+
+	/**
 	 * Magic Method for calling the methods on the default Swift Mailer
 	 * driver.
 	 *
