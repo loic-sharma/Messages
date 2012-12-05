@@ -356,6 +356,13 @@ abstract class Driver {
 		return false;
 	}
 
+	/**
+	 * Call a Swiftmailer method.
+	 *
+	 * @param  string  $name
+	 * @param  array   $arguments
+	 * @return Driver
+	 */
 	public function __call($name, $arguments)
 	{
 		call_user_func_array(array($this->swift(), $name), $arguments);

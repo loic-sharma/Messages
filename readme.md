@@ -40,6 +40,8 @@ Config::set('messages::config.transports.smtp.encryption', 'ssl');
 
 ### Sending a message:
 
+Sending a message couldn't be easier.
+
 ```php
 <?php
 
@@ -48,6 +50,23 @@ Message::to('someone@gmail.com')
 	->subject('Hello!')
 	->body('Well hello Someone, how is it going?')
 	->send();
+
+```
+
+Or, you can pass a closure to the send method.
+
+```php
+
+<?php
+
+Message::send(function($message)
+{
+	$message->to('someone@gmail.com');
+	$message->from('me@gmail.com', 'Bob Marley');
+	$message->subject('Hello!');
+	$message->body('Well hello Someone, how is it going?');
+});
+
 ```
 
 ### Checking if the message was sent
