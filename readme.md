@@ -56,7 +56,7 @@ Message::send(function($message)
 
 ```
 
-Or, you can simply cain the methods directly from the class.
+Or, you can simply chain the methods directly from the `Message` class.
 
 ```php
 
@@ -113,48 +113,6 @@ Message::send(function($message)
 
 ```
 
-### Checking if the message was sent
-
-```php
-<?php
-
-Message::send(function($message)
-{
-	$message->to('someone@gmail.com');
-	$message->from('me@gmail.com', 'Bob Marley');
-
-	$message->subject('Hello!');
-	$message->body('Well hello Someone, how is it going?');
-});
-
-if(Message::was_sent())
-{
-	echo 'Sweet it worked!';
-}
-
-```
-
-### Checking if a specific email received the message
-
-```php
-<?php
-
-Message::send(function($message)
-{
-	$message->to('someone@gmail.com');
-	$message->from('me@gmail.com', 'Bob Marley');
-
-	$message->subject('Hello!');
-	$message->body('Well hello Someone, how is it going?');
-});
-
-if(Message::was_sent('someone@gmail.com'))
-{
-	echo 'Sweet, Someone got the email!';
-}
-
-```
-
 ### Sending an email with an attachment
 
 ```php
@@ -208,6 +166,35 @@ Message::send(function($message)
 
 ```
 
+### Checking if the message was sent
+
+```php
+<?php
+
+Message::send(function($message)
+{
+	$message->to(array('someone@gmail.com', 'email@address.com' => 'name'));
+	$message->cc('more@addresses.com');
+	$messages->bcc(array('evenmore@address.com' => 'Another name', 'onelast@address.com'));
+
+	$message->from('me@gmail.com', 'Bob Marley');
+	$message->subject('Hello!');
+	$message->body('I really like spamming people!');
+});
+
+if(Message::was_sent())
+{
+	echo 'Sweet it worked!';
+}
+
+// You can even check if a specific email address received
+// the message.
+if(Message::was_sent('someone@gmail.com'))
+{
+	echo 'Someone got the email!';
+} 
+
+```
 
 ## Swift Mailer, by Chris Corbyn
 
