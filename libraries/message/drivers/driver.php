@@ -4,6 +4,8 @@ use Swift_Mailer;
 use Swift_Message;
 use Swift_Attachment;
 
+use Laravel\View;
+
 abstract class Driver {
 
 	/**
@@ -19,6 +21,13 @@ abstract class Driver {
 	 * @var mixed
 	 */
 	public $transport;
+
+	/**
+	 * The view data for emails.
+	 *
+	 * @var array
+	 */
+	public $data = array();
 
 	/**
 	 * The number of successfully sent emails.
@@ -268,6 +277,18 @@ abstract class Driver {
 	 */
 	public function body($message, $content_type = null, $charset = null)
 	{
+		if($message instanceof View)
+		{
+			$message = $message->render();
+		}
+
+		elseif(strpos($message, 'view: ') === 0)
+		{
+			$message = substr($message, 6);
+
+			$message = View::make($message, $this->data)->render();
+		}
+
 		$this->swift()->setBody($message, $content_type, $charset);
 
 		return $this;
@@ -354,6 +375,18 @@ abstract class Driver {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Set some view data for email templates.
+	 *
+	 * @param  string  $key
+	 * @param  mixed   $value
+	 * @return void
+	 */
+	public function __set($key, $value)
+	{
+		$this->data[$key] = $value;
 	}
 
 	/**
