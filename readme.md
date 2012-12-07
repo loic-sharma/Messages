@@ -45,6 +45,23 @@ Sending a message couldn't be easier.
 ```php
 <?php
 
+Message::send(function($message)
+{
+	$message->to('someone@gmail.com');
+	$message->from('me@gmail.com', 'Bob Marley');
+
+	$message->subject('Hello!');
+	$message->body('Well hello Someone, how is it going?');
+});
+
+```
+
+Or, you can simply cain the methods directly from the class.
+
+```php
+
+<?php
+
 Message::to('someone@gmail.com')
 	->from('me@gmail.com', 'Bob Marley')
 	->subject('Hello!')
@@ -53,10 +70,9 @@ Message::to('someone@gmail.com')
 
 ```
 
-Or, you can pass a closure to the send method.
+### Sending an email with HTML
 
 ```php
-
 <?php
 
 Message::send(function($message)
@@ -64,7 +80,35 @@ Message::send(function($message)
 	$message->to('someone@gmail.com');
 	$message->from('me@gmail.com', 'Bob Marley');
 	$message->subject('Hello!');
-	$message->body('Well hello Someone, how is it going?');
+
+	$message->body('Well hello <b>Someone</b>, how is it going?');
+
+	$message->html(true);
+});
+
+```
+
+### Using Views
+
+Emails with HTML can become quite cumbersome. Therefore, it is recommended that
+you store your emails in views.
+
+```php
+<?php
+
+Message::send(function($message)
+{
+	$message->to('someone@gmail.com');
+	$message->from('me@gmail.com', 'Bob Marley');
+
+	$message->subject('Hello!');
+	$message->body('view: emails.hello');
+
+	// You can add View data by simply setting the value
+	// to the message.
+	$message->name = 'Someone';
+
+	$message->html(true);
 });
 
 ```
@@ -74,22 +118,20 @@ Message::send(function($message)
 ```php
 <?php
 
-$message = Message::to('someone@gmail.com')
-			->from('me@gmail.com', 'Bob Marley')
-			->subject('Hello!')
-			->body('Well hello Someone, how is it going?')
-			->send();
-
-if($message->was_sent())
+Message::send(function($message)
 {
-	echo 'Sweet it worked!';
-}
+	$message->to('someone@gmail.com');
+	$message->from('me@gmail.com', 'Bob Marley');
 
-// Or:
+	$message->subject('Hello!');
+	$message->body('Well hello Someone, how is it going?');
+});
+
 if(Message::was_sent())
 {
 	echo 'Sweet it worked!';
 }
+
 ```
 
 ### Checking if a specific email received the message
@@ -97,16 +139,20 @@ if(Message::was_sent())
 ```php
 <?php
 
-$message = Message::to('someone@gmail.com')
-			->from('me@gmail.com', 'Bob Marley')
-			->subject('Hello!')
-			->body('Well hello Someone, how is it going?')
-			->send();
+Message::send(function($message)
+{
+	$message->to('someone@gmail.com');
+	$message->from('me@gmail.com', 'Bob Marley');
 
-if($message->was_sent('someone@gmail.com'))
+	$message->subject('Hello!');
+	$message->body('Well hello Someone, how is it going?');
+});
+
+if(Message::was_sent('someone@gmail.com'))
 {
 	echo 'Sweet, Someone got the email!';
 }
+
 ```
 
 ### Sending an email with an attachment
@@ -114,25 +160,17 @@ if($message->was_sent('someone@gmail.com'))
 ```php
 <?php
 
-Message::to('someone@gmail.com')
-	->from('me@gmail.com')
-	->subject('Hello!')
-	->body('Well hello Someone, how is it going?')
-	->attach('/path/to/file.txt')
-	->send();
-```
+Message::send(function($message)
+{
+	$message->to('someone@gmail.com');
+	$message->from('me@gmail.com', 'Bob Marley');
 
-### Sending an email with HTML
+	$message->subject('Hello!');
+	$message->body('Well hello Someone, how is it going?');
 
-```php
-<?php
+	$message->attach('/path/to/file.extension');
+});
 
-Message::to('someone@gmail.com')
-	->from('me@gmail.com')
-	->subject('Hello!')
-	->body('Well hello <b>Someone</b>, how is it going?')
-	->html(true)
-	->send();
 ```
 
 ### Sending emails to multiple email addresses
@@ -140,12 +178,17 @@ Message::to('someone@gmail.com')
 ```php
 <?php
 
-Message::to(array('someone@gmail.com', 'email@address.com' => 'name'))
-	->cc('more@addresses.com')
-	->bcc(array('evenmore@address.com' => 'Another name', 'onelast@address.com'))
-	->subject('Hello Guys!')
-	->body('I really like spamming people!')
-	->send(); 
+Message::send(function($message)
+{
+	$message->to(array('someone@gmail.com', 'email@address.com' => 'name'));
+	$message->cc('more@addresses.com');
+	$messages->bcc(array('evenmore@address.com' => 'Another name', 'onelast@address.com'));
+
+	$message->from('me@gmail.com', 'Bob Marley');
+	$message->subject('Hello!');
+	$message->body('I really like spamming people!');
+});
+
 ```
 
 ### Sending an email with a reply address
@@ -153,13 +196,16 @@ Message::to(array('someone@gmail.com', 'email@address.com' => 'name'))
 ```php
 <?php
 
-Message::to('someone@gmail.com')
-	->from('me@gmail.com')
-	->reply('replytome@gmail.com')
-	->subject('Hello!')
-	->body('Well hello <b>Someone</b>, how is it going?')
-	->html(true)
-	->send();
+Message::send(function($message)
+{
+	$message->to('someone@gmail.com');
+	$message->from('me@gmail.com', 'Bob Marley');
+	$message->reply('replytome@gmail.com');
+
+	$message->subject('Hello!');
+	$message->body('Well hello Someone, how is it going?');
+});
+
 ```
 
 
