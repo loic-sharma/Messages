@@ -348,13 +348,23 @@ abstract class Driver {
 	*
 	* @param  string  $header
 	* @param  string  $value
-	* @return Driver
+	* @return mixed
 	*/
-	public function header($header, $value)
+	public function header($header, $value = null)
 	{
-		$this->swift()->getHeaders()->addTextHeader($header, $value);
+		$headers = $this->swift()->getHeaders();
 
-		return $this;
+		if($value == null)
+		{
+			return $headers->get($header);
+		}
+
+		else
+		{
+			$headers->addTextHeader($header, $value);
+
+			return $this;
+		}
 	}
 
 	/**
