@@ -106,7 +106,7 @@ Message::send(function($message)
 
 	// You can add View data by simply setting the value
 	// to the message.
-	$message->name = 'Someone';
+	$message->body->name = 'Someone';
 
 	$message->html(true);
 });
