@@ -30,13 +30,6 @@ abstract class Driver {
 	protected $mailer;
 
 	/**
-	 * The view data for emails.
-	 *
-	 * @var array
-	 */
-	public $data = array();
-
-	/**
 	 * The email body.
 	 *
 	 * @var mixed
@@ -323,12 +316,15 @@ abstract class Driver {
 	 */
 	protected function prepareBody()
 	{
-		$body = $this->body;
-
 		// If the body is a view, we'll need to render it.
-		if($body instanceof View)
+		if($this->body instanceof View)
 		{
-			$body = $body->with($this->data)->render();
+			$body = $this->body->render();
+		}
+
+		else
+		{
+			$body = $this->body;
 		}
 
 		$this->swift()->setBody($body);
@@ -417,18 +413,6 @@ abstract class Driver {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Set some view data for email templates.
-	 *
-	 * @param  string  $key
-	 * @param  mixed   $value
-	 * @return void
-	 */
-	public function __set($key, $value)
-	{
-		$this->data[$key] = $value;
 	}
 
 	/**
