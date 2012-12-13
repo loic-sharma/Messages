@@ -9,18 +9,25 @@ use Laravel\View;
 abstract class Driver {
 
 	/**
-	 * The instance of the Swift Mailer message.
+	 * The instance of the SwiftMailer message.
 	 *
 	 * @var Swift_Mailer
 	 */
-	public $swift;
+	protected $swift;
 
 	/**
-	 * The instance of the Swift Mailer transport.
+	 * The instance of the SwiftMailer transport.
 	 *
 	 * @var mixed
 	 */
 	public $transport;
+
+	/**
+	 * The instance of the SwiftNailer mailer.
+	 *
+	 * @var Swift_Mailer
+	 */
+	protected $mailer;
 
 	/**
 	 * The view data for emails.
@@ -78,6 +85,21 @@ abstract class Driver {
 		}
 
 		return $this->swift;
+	}
+
+	/**
+	 * Prepare the Swift Mailer class
+	 *
+	 * @return Swift_Mailer
+	 */
+	public function mailer()
+	{
+		if(is_null($this->mailer))
+		{
+			$this->mailer = Swift_Mailer::newInstance($this->transport);
+		}
+
+		return $this->mailer;
 	}
 
 	/**
@@ -350,9 +372,7 @@ abstract class Driver {
 		$this->prepareBody();
 
 		// Now let's send the email.
-		$mailer = Swift_Mailer::newInstance($this->transport);
-
-		$this->result = $mailer->send($this->swift(), $this->failed);
+		$this->result = $this->mailer()->send($this->swift(), $this->failed);
 
 		// Now that the email is sent, let's clear the Swift_Message instance
 		// so that it can be reinstantiated later if another message is created.
