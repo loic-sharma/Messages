@@ -30,6 +30,13 @@ abstract class Driver {
 	public $data = array();
 
 	/**
+	 * The email body.
+	 *
+	 * @var mixed
+	 */
+	public $body = array();
+
+	/**
 	 * The number of successfully sent emails.
 	 *
 	 * @var int
@@ -271,27 +278,38 @@ abstract class Driver {
 	 * Set the body of the email.
 	 *
 	 * @param  string  $message
-	 * @param  string  $content_type
-	 * @param  string  $charset
 	 * @return Driver
 	 */
-	public function body($message, $content_type = null, $charset = null)
+	public function body($body)
 	{
-		if($message instanceof View)
+		if(strpos($body, 'view: ') === 0)
 		{
-			$message = $message->render();
+			$body = substr($body, 6);
+
+			$body = View::make($body);
 		}
 
-		elseif(strpos($message, 'view: ') === 0)
-		{
-			$message = substr($message, 6);
-
-			$message = View::make($message, $this->data)->render();
-		}
-
-		$this->swift()->setBody($message, $content_type, $charset);
+		$this->body = $body;
 
 		return $this;
+	}
+
+	/**
+	 * Prepare the body and send it to the Swiftmailer.
+	 *
+	 * @return null
+	 */
+	protected function prepareBody()
+	{
+		$body = $this->body;
+
+		// If the body is a view, we'll need to render it.
+		if($body instanceof View)
+		{
+			$body = $body->with($this->data)->render();
+		}
+
+		$this->swift()->setBody($body);
 	}
 
 	/**
@@ -328,6 +346,10 @@ abstract class Driver {
 	 */
 	public function send()
 	{
+		// Before we send anything we need to prepare the body.
+		$this->prepareBody();
+
+		// Now let's send the email.
 		$mailer = Swift_Mailer::newInstance($this->transport);
 
 		$this->result = $mailer->send($this->swift(), $this->failed);
