@@ -1,12 +1,13 @@
 <?php namespace Swiftmailer\Drivers;
 
+use stdClass;
 use Swift_Mailer;
 use Swift_Message;
 use Swift_Attachment;
 
 use Laravel\View;
 
-abstract class Driver {
+class Driver {
 
 	/**
 	 * The instance of the SwiftMailer message.
@@ -63,7 +64,10 @@ abstract class Driver {
 	 * @param  array  $config
 	 * @return void
 	 */
-	abstract public function __construct($config);
+	public function __construct($config)
+	{
+		$this->body = new stdClass;
+	}
 
 	/**
 	 * Prepare the Swift Message class
@@ -301,7 +305,7 @@ abstract class Driver {
 		{
 			$body = substr($body, 6);
 
-			$body = View::make($body);
+			$body = View::make($body, (array) $this->body);
 		}
 
 		$this->body = $body;

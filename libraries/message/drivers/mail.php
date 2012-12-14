@@ -12,6 +12,8 @@ class Mail extends Driver {
 	 */
 	public function __construct($config)
 	{
+		parent::__construct($config);
+
 		$this->transport = Swift_MailTransport::newInstance();
 	}
 }

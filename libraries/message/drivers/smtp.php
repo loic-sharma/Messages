@@ -12,6 +12,8 @@ class SMTP extends Driver {
 	 */
 	public function __construct($config)
 	{
+		parent::__construct($config);
+
 		$this->transport = Swift_SmtpTransport::newInstance();
 
 		$this->transport->setHost($config['host'])

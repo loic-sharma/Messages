@@ -12,6 +12,8 @@ class Sendmail extends Driver {
 	 */
 	public function __construct($config)
 	{
+		parent::__construct($config);
+
 		$this->transport = Swift_SendmailTransport::newInstance($config['command']);
 	}
 }
