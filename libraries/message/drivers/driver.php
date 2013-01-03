@@ -337,12 +337,32 @@ class Driver {
 	/**
 	 * Attach a file to the email.
 	 *
-	 * @param  string  $file_path
+	 * @param  string  $file_data
+	 * @param  string  $file_name
+	 * @param  string  $mime_type
 	 * @return Driver
 	 */
-	public function attach($file_path)
+	public function attach($file_data, $file_name = '', $mime_type = '')
 	{
-		$this->swift()->attach(Swift_Attachment::fromPath($file_path));
+		if(file_exists($file_data))
+		{		
+			$attachment = Swift_Attachment::fromPath($file_data);
+			if($file_name != '')
+			{
+				$attachment->setFilename($file_name);
+			}
+			if($mime_type != '')
+			{
+				$attachment->setContentType($mime_type);
+			}
+		} 
+		
+		else 
+		{
+			$attachment = Swift_Attachment::newInstance($file_data, $file_name, $mime_type);
+		}
+
+		$this->swift()->attach($attachment);
 
 		return $this;
 	}

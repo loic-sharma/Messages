@@ -127,6 +127,7 @@ Message::send(function($message)
 	$message->body('Well hello Someone, how is it going?');
 
 	$message->attach('/path/to/file.extension');
+	$message->attach($generated_content, 'file-name.extension', 'mime/type');
 });
 
 ```
