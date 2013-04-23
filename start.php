@@ -40,7 +40,7 @@ Swift::init(function()
 
 // Map the Message classes.
 Autoloader::map(array(
-	'Message' => __DIR__.DS.'libraries'.DS.'message.php',
+	'Mail\\Message' => __DIR__.DS.'libraries'.DS.'message.php',
 
 	'Swiftmailer\\Drivers\\Driver'    => __DIR__.DS.'libraries'.DS.'message'.DS.'drivers'.DS.'driver.php',
 	'Swiftmailer\\Drivers\\SMTP'      => __DIR__.DS.'libraries'.DS.'message'.DS.'drivers'.DS.'smtp.php',
