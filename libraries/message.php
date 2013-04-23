@@ -1,4 +1,8 @@
-<?php
+<?php namespace Mail;
+
+use Closure;
+use Config;
+use Swiftmailer;
 
 class Message {
 
